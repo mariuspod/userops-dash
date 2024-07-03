@@ -1,0 +1,52 @@
+version: "3.8"
+
+volumes:
+  grafana_data: {}
+  victoria_metrics_data: {}
+
+networks:
+  userops-dash:
+
+services:
+  userops-dash:
+    build: .
+    image: userops-dash
+    depends_on:
+      - victoria-metrics
+    environment:
+      - BACKFILL_START_BLOCK=${BACKFILL_START_BLOCK}
+      - LOG_RANGE_SIZE=${LOG_RANGE_SIZE:-100}
+    networks:
+      - userops-dash
+    restart: always
+
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics:v1.81.1
+    volumes:
+      - victoria_metrics_data:/victoria-metrics-data
+    command:
+      - "-retentionPeriod=10y"
+      - "-search.disableAutoCacheReset=true"
+    ports:
+      - 127.0.0.1:8428:8428
+    networks:
+      - userops-dash
+    restart: always
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    depends_on:
+      - victoria-metrics
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/userops/userops-dash.json
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    networks:
+      - userops-dash
+    restart: always

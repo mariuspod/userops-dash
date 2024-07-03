@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+- name: 'Userops dashboards'
+  orgId: 1
+  folder: 'userops'
+  type: file
+  disableDeletion: true
+  editable: false
+  options:
+    path: /etc/grafana/provisioning/dashboards/userops
