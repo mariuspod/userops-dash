@@ -1,6 +1,6 @@
 # userops-dash
 
-This is a simple python based tool using the framework [ApeWorx ape](https://docs.apeworx.io/ape/stable/index.html) for exporting `UserOperationEvent` logs from the biconomy entrypoint contract [deployed on base](https://basescan.org/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789).
+This is a simple python based tool using the web3 framework [ape](https://docs.apeworx.io/ape/stable/index.html) and the parallel processing framework [dask](https://docs.dask.org/en/stable/) for querying and parsing `UserOperationEvent` logs from the biconomy entrypoint contract [deployed on base](https://basescan.org/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789).
 
 The indexed data is persisted to a local [victoria-metrics](https://docs.victoriametrics.com) db. The db is added as the default datasource for a provisioned grafana dashboard. The script is built in a way so that it's easy to extend to other chains.
 
