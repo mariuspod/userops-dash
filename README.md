@@ -4,6 +4,8 @@ This is a simple python based tool using the framework [ApeWorx ape](https://doc
 
 The indexed data is persisted to a local [victoria-metrics](https://docs.victoriametrics.com) db. The db is added as the default datasource for a provisioned grafana dashboard. The script is built in a way so that it's easy to extend to other chains.
 
+![Screenshot](./assets/grafana.png)
+
 ## Usage
 Clone the repo and run this command to start all processing:
 
